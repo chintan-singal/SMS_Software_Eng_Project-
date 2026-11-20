@@ -1,0 +1,77 @@
+2026-11-20 01:02:03,445 werkzeug INFO 127.0.0.1 - - [20/Nov/2026 01:02:03] "POST /student/login HTTP/1.1" 302 -
+2026-11-20 01:02:03,501 werkzeug INFO 127.0.0.1 - - [20/Nov/2026 01:02:03] "POST /faculty/login HTTP/1.1" 302 -
+2026-11-20 01:02:03,549 werkzeug INFO 127.0.0.1 - - [20/Nov/2026 01:02:03] "POST /admin HTTP/1.1" 302 -
+2026-11-20 01:02:03,588 werkzeug INFO 127.0.0.1 - - [20/Nov/2026 01:02:03] "GET /student/dashboard HTTP/1.1" 200 -
+2026-11-20 01:02:03,611 werkzeug INFO 127.0.0.1 - - [20/Nov/2026 01:02:03] "GET /student/grades HTTP/1.1" 200 -
+2026-11-20 01:02:03,656 werkzeug INFO 127.0.0.1 - - [20/Nov/2026 01:02:03] "GET /student/attendance HTTP/1.1" 200 -
+2026-11-20 01:02:03,820 werkzeug INFO 127.0.0.1 - - [20/Nov/2026 01:02:03] "GET /student/timetable HTTP/1.1" 200 -
+2026-11-20 01:02:03,833 werkzeug INFO 127.0.0.1 - - [20/Nov/2026 01:02:03] "GET /student/timetable HTTP/1.1" 200 -
+2026-11-20 01:02:03,907 werkzeug INFO 127.0.0.1 - - [20/Nov/2026 01:02:03] "GET /faculty/dashboard HTTP/1.1" 200 -
+2026-11-20 01:02:03,941 werkzeug INFO 127.0.0.1 - - [20/Nov/2026 01:02:03] "GET /admin/dashboard HTTP/1.1" 200 -
+2026-11-20 01:02:03,989 werkzeug INFO 127.0.0.1 - - [20/Nov/2026 01:02:03] "POST /student/feedback HTTP/1.1" 200 -
+2026-11-20 01:02:04,002 werkzeug INFO 127.0.0.1 - - [20/Nov/2026 01:02:04] "POST /student/feedback HTTP/1.1" 200 -
+2026-11-20 01:02:04,014 werkzeug INFO 127.0.0.1 - - [20/Nov/2026 01:02:04] "POST /student/login HTTP/1.1" 302 -
+2026-11-20 01:02:04,031 werkzeug INFO 127.0.0.1 - - [20/Nov/2026 01:02:04] "GET / HTTP/1.1" 200 -
+2026-11-20 01:02:04,043 admin ERROR Exception on /admin [POST]
+Traceback (most recent call last):
+  File "<QA_WORKDIR>/venv\Lib\site-packages\flask\app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<QA_WORKDIR>/venv\Lib\site-packages\flask\app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<QA_WORKDIR>/venv\Lib\site-packages\flask\app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "<QA_WORKDIR>/venv\Lib\site-packages\flask\app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<QA_WORKDIR>/verification\source\SMS-DBS-master\admin.py", line 203, in admin_login
+    return render_template('invalid-login.html')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<QA_WORKDIR>/venv\Lib\site-packages\flask\templating.py", line 150, in render_template
+    template = app.jinja_env.get_or_select_template(template_name_or_list)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<QA_WORKDIR>/venv\Lib\site-packages\jinja2\environment.py", line 1087, in get_or_select_template
+    return self.get_template(template_name_or_list, parent, globals)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<QA_WORKDIR>/venv\Lib\site-packages\jinja2\environment.py", line 1016, in get_template
+    return self._load_template(name, globals)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<QA_WORKDIR>/venv\Lib\site-packages\jinja2\environment.py", line 975, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<QA_WORKDIR>/venv\Lib\site-packages\jinja2\loaders.py", line 126, in load
+    source, filename, uptodate = self.get_source(environment, name)
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<QA_WORKDIR>/venv\Lib\site-packages\flask\templating.py", line 66, in get_source
+    return self._get_source_fast(environment, template)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<QA_WORKDIR>/venv\Lib\site-packages\flask\templating.py", line 100, in _get_source_fast
+    raise TemplateNotFound(template)
+jinja2.exceptions.TemplateNotFound: invalid-login.html
+2026-11-20 01:02:04,049 werkzeug INFO 127.0.0.1 - - [20/Nov/2026 01:02:04] "POST /admin HTTP/1.1" 500 -
+2026-11-20 01:02:04,064 werkzeug INFO 127.0.0.1 - - [20/Nov/2026 01:02:04] "POST /student/login HTTP/1.1" 302 -
+2026-11-20 01:02:04,099 werkzeug INFO 127.0.0.1 - - [20/Nov/2026 01:02:04] "GET /student/assignments HTTP/1.1" 200 -
+2026-11-20 01:02:04,126 werkzeug INFO 127.0.0.1 - - [20/Nov/2026 01:02:04] "POST /faculty/assignments/new HTTP/1.1" 302 -
+2026-11-20 01:02:04,157 werkzeug INFO 127.0.0.1 - - [20/Nov/2026 01:02:04] "GET /student/assignments HTTP/1.1" 200 -
+2026-11-20 01:02:04,196 werkzeug INFO 127.0.0.1 - - [20/Nov/2026 01:02:04] "POST /student/submit_assignment HTTP/1.1" 302 -
+2026-11-20 01:02:04,236 werkzeug INFO 127.0.0.1 - - [20/Nov/2026 01:02:04] "GET /faculty/submissions HTTP/1.1" 200 -
+2026-11-20 01:02:04,252 werkzeug INFO 127.0.0.1 - - [20/Nov/2026 01:02:04] "POST /faculty/submissions/grade HTTP/1.1" 302 -
+2026-11-20 01:02:04,261 werkzeug INFO 127.0.0.1 - - [20/Nov/2026 01:02:04] "GET /student/assignments HTTP/1.1" 200 -
+2026-11-20 01:02:04,287 werkzeug INFO 127.0.0.1 - - [20/Nov/2026 01:02:04] "POST /student/submit_assignment HTTP/1.1" 302 -
+2026-11-20 01:02:04,301 werkzeug INFO 127.0.0.1 - - [20/Nov/2026 01:02:04] "POST /student/request HTTP/1.1" 302 -
+2026-11-20 01:02:04,321 werkzeug INFO 127.0.0.1 - - [20/Nov/2026 01:02:04] "GET /admin/approvals HTTP/1.1" 200 -
+2026-11-20 01:02:04,338 werkzeug INFO 127.0.0.1 - - [20/Nov/2026 01:02:04] "GET /admin/approve_request/1/approve HTTP/1.1" 302 -
+2026-11-20 01:02:04,381 werkzeug INFO 127.0.0.1 - - [20/Nov/2026 01:02:04] "GET /student/request HTTP/1.1" 200 -
+2026-11-20 01:02:04,399 werkzeug INFO 127.0.0.1 - - [20/Nov/2026 01:02:04] "POST /student/login HTTP/1.1" 302 -
+2026-11-20 01:02:04,406 werkzeug INFO 127.0.0.1 - - [20/Nov/2026 01:02:04] "GET /student/logout HTTP/1.1" 302 -
+2026-11-20 01:02:04,412 werkzeug INFO 127.0.0.1 - - [20/Nov/2026 01:02:04] "GET /student/dashboard HTTP/1.1" 302 -
+2026-11-20 01:02:06,646 werkzeug INFO 127.0.0.1 - - [20/Nov/2026 01:02:06] "GET / HTTP/1.1" 200 -
+2026-11-20 01:02:06,924 werkzeug INFO 127.0.0.1 - - [20/Nov/2026 01:02:06] "GET /static/assets/css/login.css HTTP/1.1" 200 -
+2026-11-20 01:02:06,934 werkzeug INFO 127.0.0.1 - - [20/Nov/2026 01:02:06] "GET /static/assets/images/sau-white-logo.png HTTP/1.1" 200 -
+2026-11-20 01:02:07,258 werkzeug INFO 127.0.0.1 - - [20/Nov/2026 01:02:07] "POST /student/login HTTP/1.1" 302 -
+2026-11-20 01:02:07,280 werkzeug INFO 127.0.0.1 - - [20/Nov/2026 01:02:07] "GET /student/dashboard HTTP/1.1" 200 -
+2026-11-20 01:02:07,340 werkzeug INFO 127.0.0.1 - - [20/Nov/2026 01:02:07] "GET /static/assets/css/pages.css HTTP/1.1" 200 -
+2026-11-20 01:02:07,942 werkzeug INFO 127.0.0.1 - - [20/Nov/2026 01:02:07] "GET /student/timetable HTTP/1.1" 200 -
+2026-11-20 01:02:08,002 werkzeug INFO 127.0.0.1 - - [20/Nov/2026 01:02:08] "GET /static/assets/css/pages.css HTTP/1.1" 200 -

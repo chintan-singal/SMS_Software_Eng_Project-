@@ -1,0 +1,35 @@
+erDiagram
+    Person ||--o| Student : "student profile"
+    Person ||--o| Faculty : "faculty profile"
+    Person ||--o| Admin : "admin profile"
+    Department ||--o{ Program : "offers"
+    Department ||--o{ Faculty : "groups"
+    Department ||--o{ Course : "owns"
+    Program ||--o{ Student : "admits"
+    Student ||--o{ Enrollment : "enrolls"
+    Course ||--o{ Enrollment : "lists"
+    Faculty ||--o{ Teaches : "teaches"
+    Course ||--o{ Teaches : "assigned"
+    Person {
+      int PersonID PK
+    }
+    Student {
+      int StudentID PK,FK
+      int ProgramID FK
+    }
+    Faculty {
+      int FacultyID PK,FK
+      int DepartmentID FK
+    }
+    Admin {
+      int AdminID PK,FK
+    }
+    Enrollment {
+      int EnrollmentID PK
+      int StudentID FK
+      int CourseID FK
+    }
+    Teaches {
+      int CourseID PK,FK
+      int FacultyID PK,FK
+    }

@@ -1,0 +1,11 @@
+sequenceDiagram
+    participant S as Student portal
+    participant D as MySQL
+    participant A as Admin portal
+    S->>D: Insert Pending request and commit
+    A->>D: Query pending requests
+    D-->>A: Requests with student names
+    A->>D: Find request by ID
+    A->>D: Set Approved or Rejected and commit
+    S->>D: Query history for signed-in student
+    D-->>S: Updated request status

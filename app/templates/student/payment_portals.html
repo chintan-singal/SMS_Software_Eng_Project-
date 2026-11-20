@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Payment Portals</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/pages.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/portals.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <main class="main-content">
+            <header>
+                <div class="search-bar"><i class="fas fa-search"></i><input type="text" placeholder="Search payments..."></div>
+                <div class="user-profile"><div class="user-info"><h4>{{ user_name }}</h4></div></div>
+            </header>
+
+            <div class="banner">
+                <div class="banner-text">
+                    <h1>Payment Gateways</h1>
+                    <p>Choose a portal to complete your payment. This page provides quick links to major bank/payment portals.</p>
+                </div>
+                <div class="banner-img"><i class="fas fa-credit-card"></i></div>
+            </div>
+
+            <div class="dashboard-grid">
+                <div class="left-column" style="width:100%;">
+                    <section>
+                        <div class="header-row">
+                            <div class="section-title">Available Portals</div>
+                            {% if invoice %}
+                            <div style="margin-left:auto; font-size:14px; color:#374151;">Invoice: <strong>#INV-{{ invoice }}</strong></div>
+                            {% endif %}
+                        </div>
+
+                        <div class="notices-card" style="padding:18px;">
+                            <p style="color:#475569; margin-bottom:12px;">Select any portal below to open it in a new tab. Use your bank or UPI app to complete the transfer to the institute account.</p>
+
+                            <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(220px, 1fr)); gap:14px;">
+                                {% for p in portals %}
+                                <div class="card portal-card">
+                                    <div class="portal-icon">
+                                        <i class="fas fa-university"></i>
+                                    </div>
+                                    <div class="portal-meta">
+                                        <div class="portal-title">{{ p.name }}</div>
+                                        <div class="portal-sub">{{ p.url | replace('https://','') | replace('http://','') }}</div>
+                                    </div>
+                                    <div class="portal-actions">
+                                        <a class="btn-view portal-open" href="{{ p.url }}" target="_blank" rel="noopener noreferrer">Open</a>
+                                        {% if invoice %}
+                                        <div class="portal-invoice">#INV-{{ invoice }}</div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+
+                                <div style="margin-top:18px; display:flex; gap:10px; align-items:center;">
+                                <a href="{{ url_for('student_fees') }}" class="btn-view">Back to Fees</a>
+                                <div style="color:#6B7280; font-size:13px;">Need account details? Contact finance or check your invoice email for payment instructions.</div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

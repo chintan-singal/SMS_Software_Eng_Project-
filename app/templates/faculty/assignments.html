@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Assignments</title>
+
+    <!-- Correct CSS file -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/faculty.css') }}">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+    <script>
+        // Force a reload if the user navigates back to this page after logout
+        window.addEventListener("pageshow", function (event) {
+            const historyTraversal = event.persisted ||
+                (typeof window.performance !== "undefined" &&
+                    window.performance.navigation.type === 2);
+
+            if (historyTraversal) {
+                // Reload the page to trigger the server-side session check
+                window.location.reload();
+            }
+        });
+    </script>
+
+</head>
+
+<body>
+
+    <div class="app-container">
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <div class="logo-area">
+                <i class="fas fa-chalkboard-teacher"></i>
+            </div>
+
+            <ul class="nav-menu">
+                <button class="nav-btn" onclick="location.href='/faculty/dashboard'">
+                    <i class="fas fa-columns"></i> Dashboard
+                </button>
+                <button class="nav-btn" onclick="location.href='/faculty/courses'">
+                    <i class="fas fa-book"></i> My Courses
+                </button>
+                <button class="nav-btn" onclick="location.href='/faculty/students'">
+                    <i class="fas fa-users"></i> Enrolled Students
+                </button>
+                <button class="nav-btn active" onclick="location.href='/faculty/assignments'">
+                    <i class="fas fa-tasks"></i> Assignments
+                </button>
+                <button class="nav-btn" onclick="location.href='/faculty/submissions'">
+                    <i class="fas fa-file-upload"></i> Submissions
+                </button>
+                <button class="nav-btn" onclick="location.href='/faculty/attendance'">
+                    <i class="fas fa-check-circle"></i> Attendance
+                </button>
+                <button class="nav-btn" onclick="location.href='/faculty/exams'">
+                    <i class="fas fa-pencil-ruler"></i> Exams & Marks
+                </button>
+                <button class="nav-btn" onclick="location.href='/faculty/feedback'">
+                    <i class="fas fa-comment-dots"></i> Feedback
+                </button>
+                <button class="nav-btn" onclick="location.href='/faculty/announcements'">
+                    <i class="fas fa-bullhorn"></i> Announcements
+                </button>
+                <button class="nav-btn" onclick="location.href='/faculty/documents'">
+                    <i class="fas fa-folder-open"></i> Documents
+                </button>
+            </ul>
+
+            <div class="logout" onclick="location.href='/logout'" style="cursor:pointer;">
+                <i class="fas fa-sign-out-alt" style="margin-right:15px;"></i> Logout
+            </div>
+
+        </aside>
+
+        <!-- MAIN -->
+        <main class="main-content">
+
+            <!-- HEADER -->
+            <header>
+                <div class="search-bar">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search assignments...">
+                </div>
+
+                <div class="user-profile">
+                    <div class="user-info">
+                        <h4>Dr.{{ faculty.FullName }}</h4>
+                        <span>Department of {{ faculty.Department }}</span>
+                    </div>
+                    <img src="{{ url_for('static', filename='assets/images/teacher.jpg') }}
+                    " class="avatar" />
+                </div>
+            </header>
+
+            <!-- BANNER -->
+            <div class="banner">
+                <div class="banner-text">
+                    <h1>Your Assignments</h1>
+                    <p>Create, edit and manage assignments for your courses.</p>
+                </div>
+                <div class="banner-img">
+                    <i class="fas fa-tasks"></i>
+                </div>
+            </div>
+
+            <!-- CONTENT AREA -->
+            <div class="dashboard-grid">
+
+                <div class="left-column">
+
+                    <!-- CREATE ASSIGNMENT INLINE FORM -->
+                    <section>
+                        <div class="header-row">
+                            <div class="section-title">Create Assignment</div>
+                        </div>
+
+                        <div class="notices-card">
+
+                            <!-- FORM BEGINS -->
+                            <div class="form-container">
+                                <form action="/faculty/assignments/new" method="POST">
+
+                                    <label class="form-label">Course</label>
+                                    <select name="course_id" class="form-select" required>
+                                        {% for c in courses %}
+                                        <option value="{{ c.CourseID }}">{{ c.CourseName }}</option>
+                                        {% endfor %}
+                                    </select>
+
+                                    <label class="form-label">Title</label>
+                                    <input type="text" name="title" class="form-input" required>
+
+                                    <label class="form-label">Description</label>
+                                    <textarea name="description" class="form-textarea" required></textarea>
+
+                                    <label class="form-label">Deadline</label>
+                                    <input type="datetime-local" name="deadline" class="form-input" required>
+
+                                    <label class="form-label">Max Marks</label>
+                                    <input type="number" name="maxmarks" class="form-input" required>
+
+                                    <button type="submit" class="form-button">Create Assignment</button>
+
+                                </form>
+                            </div>
+
+                            <!-- FORM ENDS -->
+
+                        </div>
+                    </section>
+
+                    <!-- EXISTING ASSIGNMENTS LIST -->
+                    <section style="margin-top: 20px;">
+                        <div class="header-row">
+                            <div class="section-title">Existing Assignments</div>
+                        </div>
+
+                        <div class="notices-card">
+
+                            {% for a in assignments %}
+                            <div class="notice-item">
+                                <h5>{{ a.Title }} — {{ a.CourseCode }}</h5>
+                                <p>Due: {{ a.Deadline }} | Max Marks: {{ a.MaxMarks }}</p>
+                                <a href="#" class="notice-link">Manage</a>
+                            </div>
+                            {% endfor %}
+
+                        </div>
+                    </section>
+
+                </div>
+
+                <!-- RIGHT COLUMN -->
+                <aside class="right-column">
+
+                    <div>
+                        <div class="header-row">
+                            <div class="section-title">Recent Submission Activity</div>
+                        </div>
+
+                        <div class="notices-card">
+
+                            <div class="notice-item">
+                                <h5>{{ pending_submissions }} Pending Grading</h5>
+                                <p>Submissions awaiting evaluation.</p>
+                            </div>
+
+                            <div class="notice-item">
+                                <h5>{{ upcoming_exams }} Upcoming Exams</h5>
+                                <p>Scheduled assessments coming up.</p>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </aside>
+
+            </div>
+
+        </main>
+
+    </div>
+
+</body>
+
+</html>

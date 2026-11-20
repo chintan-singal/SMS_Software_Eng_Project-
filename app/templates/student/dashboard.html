@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/pages.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <div class="app-container">
+        
+        <aside class="sidebar" id="sidebar">
+            <div class="close-sidebar" onclick="toggleSidebar()">
+                <i class="fas fa-times"></i>
+            </div>
+            <div class="logo-area"><i class="fas fa-user-graduate"></i></div>
+            
+            <ul class="nav-menu">
+                <a href="{{ url_for('student_dashboard') }}" class="nav-btn active"><i class="fas fa-columns"></i> Dashboard</a>
+                <a href="{{ url_for('student_courses') }}" class="nav-btn"><i class="fas fa-book"></i> My Courses</a>
+                <a href="{{ url_for('student_assignments') }}" class="nav-btn"><i class="fas fa-tasks"></i> Assignments</a>
+                <a href="{{ url_for('student_grades') }}" class="nav-btn"><i class="fas fa-chart-line"></i> Grades & Exams</a>
+                <a href="{{ url_for('student_attendance') }}" class="nav-btn"><i class="fas fa-check-circle"></i> Attendance</a>
+                <a href="{{ url_for('student_timetable') }}" class="nav-btn"><i class="fas fa-calendar-alt"></i> Timetable</a>
+                <a href="{{ url_for('student_fees') }}" class="nav-btn"><i class="fas fa-wallet"></i> Fees</a>
+                <a href="{{ url_for('student_feedback') }}" class="nav-btn"><i class="fas fa-comment-dots"></i> Feedback</a>
+                <a href="{{ url_for('student_request') }}" class="nav-btn"><i class="fas fa-envelope"></i> Requests</a>
+            </ul>
+            
+            <a class="logout" href="{{ url_for('student_logout') }}">
+                <i class="fas fa-sign-out-alt" style="margin-right: 15px;"></i> Logout
+            </a>
+        </aside>
+
+        <main class="main-content">
+            <header>
+                <div class="menu-toggle" onclick="toggleSidebar()"><i class="fas fa-bars"></i></div>
+                <div class="search-bar"><i class="fas fa-search"></i><input type="text" placeholder="Search..."></div>
+                <div class="user-profile">
+                    <div class="user-info"><h4>{{ user_name }}</h4><span>{{ user_program }}</span></div>
+                    <img src="https://i.pravatar.cc/150?img=12" class="avatar">
+                </div>
+            </header>
+
+            <div class="banner">
+                <div class="banner-text">
+                    <h1>Welcome back, {{ user_name }}!</h1>
+                    <p>You have {{ pending_tasks }} assignments pending.</p>
+                </div>
+                <div class="banner-img"><i class="fas fa-graduation-cap"></i></div>
+            </div>
+
+            <div class="dashboard-grid">
+                <div class="left-column">
+                    <section>
+                        <div class="section-title">Overview</div>
+                        <div class="kpi-grid">
+                            <div class="kpi-card active">
+                                <div class="kpi-icon"><i class="fas fa-star"></i></div>
+                                <h3>{{ cgpa }}</h3>
+                                <p>Current CGPA</p>
+                            </div>
+                            <div class="kpi-card">
+                                <div class="kpi-icon"><i class="fas fa-user-clock"></i></div>
+                                <h3>{{ attendance }}%</h3>
+                                <p>Overall Attendance</p>
+                            </div>
+                            <div class="kpi-card">
+                                <div class="kpi-icon"><i class="fas fa-file-alt"></i></div>
+                                <h3>{{ "%02d" % pending_tasks }}</h3>
+                                <p>Pending Tasks</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section>
+                        <div class="header-row">
+                            <div class="section-title">Active Courses</div>
+                            <a href="{{ url_for('student_courses') }}" class="see-all">View All</a>
+                        </div>
+                        <div class="courses-container">
+                            {% for course in courses[:3] %}
+                            <div class="course-card">
+                                <h4>{{ course.CourseName }}</h4>
+                                <p style="font-size:13px; color:#666;">Faculty: {{ course.faculty_name }}</p>
+                                <a href="{{ url_for('student_courses') }}" class="btn-view">Go to Class</a>
+                                <i class="fas fa-sitemap course-icon"></i>
+                            </div>
+                            {% else %}
+                            <p>No active courses found.</p>
+                            {% endfor %}
+                        </div>
+                    </section>
+
+                    <section>
+                        <div class="header-row">
+                            <div class="section-title">Recent Assignment Grades</div>
+                            <a href="{{ url_for('student_assignments') }}" class="see-all">View All</a>
+                        </div>
+                        <div class="notices-card">
+                            {% for assignment in recent_assignments %}
+                            <div class="notice-item">
+                                <div class="header-row" style="margin-bottom:5px;">
+                                    <h5>{{ assignment.Title }}</h5>
+                                    <span class="status-pass">{{ assignment.obtained_marks }}/{{ assignment.MaxMarks }}</span>
+                                </div>
+                                <p style="font-size:13px; color:#666; margin: 5px 0;">{{ assignment.CourseName }}</p>
+                                <p style="font-size:12px; color:#999;">Submitted: {{ assignment.SubmittedAt }}</p>
+                            </div>
+                            {% else %}
+                            <div class="notice-item">
+                                <p style="color:#999;">No graded assignments yet.</p>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </section>
+                </div>
+
+                <aside class="right-column">
+                    <div>
+                        <div class="header-row">
+                            <div class="section-title">Notices</div>
+                        </div>
+                        <div class="notices-card">
+                            {% for ann in announcements %}
+                            <div class="notice-item">
+                                <h5>{{ ann.Message[:50] }}...</h5>
+                                <span style="font-size:12px; color:gray;">{{ ann.DatePosted }}</span>
+                            </div>
+                            {% else %}
+                            <div class="notice-item"><p>No new announcements.</p></div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </aside>
+            </div>
+        </main>
+    </div>
+    <script>
+        function toggleSidebar() { document.getElementById('sidebar').classList.toggle('active'); }
+    </script>
+</body>
+</html>

@@ -1,0 +1,15 @@
+sequenceDiagram
+    participant B as Student browser
+    participant S as app.py
+    participant D as MySQL
+    B->>S: POST assignment ID and link
+    S->>D: Insert Document and read its ID
+    S->>D: Find submission for student and assignment
+    alt First submission
+        S->>D: Insert Submission and read its ID
+    else Resubmission
+        S->>D: Update SubmittedAt on existing row
+    end
+    S->>D: Insert SubmissionDocument
+    S->>D: Commit all writes
+    S-->>B: Redirect to assignments

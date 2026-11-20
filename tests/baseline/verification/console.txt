@@ -1,0 +1,26 @@
+U01 PASS '302 /'
+U02 PASS 'handler ran'
+U03 PASS 0
+U04 PASS 0.0
+U05 PASS 75.0
+U06 PASS {'rollback': 1, 'commit': 0, 'cursor closed': 1, 'connection closed': 1, 'status': 302}
+I01 PASS '302 /student/dashboard'
+I02 PASS '302 /faculty/dashboard'
+I03 PASS '302 /admin/dashboard'
+I04 PASS {'HTTP': 200, 'text present': True}
+I05 PASS {'HTTP': 200, 'text present': True}
+I06 PASS {'HTTP': 200, 'text present': True}
+I07 PASS {'HTTP': 200, 'text present': True}
+I08 FAIL {'HTTP': 200, 'text present': False}
+I09 PASS {'HTTP': 200, 'text present': True}
+I10 PASS {'HTTP': 200, 'text present': True}
+I11 PASS {'HTTP': 200, 'faculty 201 rows': 1}
+I12 PASS {'HTTP': 200, 'faculty 201 rows': 1}
+S01 FAIL {'HTTP': 200, 'visible error': False}
+S02 FAIL {'HTTP': 500, 'visible error': False}
+S03 PASS {'HTTP': 200, 'text present': True}
+S04 PASS {'create': 302, 'listed for student': True, 'submit': 302, 'listed for faculty': True, 'grade': 302, 'student sees 16/20': True}
+I13 PASS {'redirect': '302 /student/assignments', 'submissions': 1, 'document links': 2}
+S05 PASS {'sent': 302, 'certificate queued': True, 'decision': 302, 'student sees Approved': True}
+S06 PASS ['302 /', '302 /']
+S07 PASS {'page': '/student/timetable', 'weekday room visible': True}

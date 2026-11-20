@@ -1,0 +1,4 @@
+class Config:
+    SECRET_KEY = "YOUR_SECRET_KEY"
+    SQLALCHEMY_DATABASE_URI = "mysql+pymysql://root:YOUR_PASSWORD@localhost/YOUR_DB_NAME"
+    SQLALCHEMY_TRACK_MODIFICATIONS = False

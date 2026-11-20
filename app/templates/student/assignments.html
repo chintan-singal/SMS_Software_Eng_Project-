@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Assignments</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/pages.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <aside class="sidebar">
+            <div class="logo-area"><i class="fas fa-user-graduate"></i></div>
+            <ul class="nav-menu">
+                <a href="{{ url_for('student_dashboard') }}" class="nav-btn"><i class="fas fa-columns"></i> Dashboard</a>
+                <a href="{{ url_for('student_courses') }}" class="nav-btn"><i class="fas fa-book"></i> My Courses</a>
+                <button class="nav-btn active"><i class="fas fa-tasks"></i> Assignments</button>
+                <a href="{{ url_for('student_grades') }}" class="nav-btn"><i class="fas fa-chart-line"></i> Grades & Exams</a>
+                <a href="{{ url_for('student_attendance') }}" class="nav-btn"><i class="fas fa-check-circle"></i> Attendance</a>
+                <a href="{{ url_for('student_timetable') }}" class="nav-btn"><i class="fas fa-calendar-alt"></i> Timetable</a>
+                <a href="{{ url_for('student_fees') }}" class="nav-btn"><i class="fas fa-wallet"></i> Fees</a>
+                <a href="{{ url_for('student_feedback') }}" class="nav-btn"><i class="fas fa-comment-dots"></i> Feedback</a>
+                <a href="{{ url_for('student_request') }}" class="nav-btn"><i class="fas fa-envelope"></i> Requests</a>
+            </ul>
+            <a class="logout" href="{{ url_for('student_logout') }}">
+                <i class="fas fa-sign-out-alt" style="margin-right: 15px;"></i> Logout
+            </a>
+        </aside>
+
+        <main class="main-content">
+            <header>
+                <div class="search-bar">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search assignments...">
+                </div>
+                <div class="user-profile">
+                    <div class="user-info">
+                        <h4>{{ user_name }}</h4>
+                        <span>{{ user_program }}</span>
+                    </div>
+                    <img src="https://i.pravatar.cc/150?img=12" class="avatar">
+                </div>
+            </header>
+
+            <div class="banner">
+                <div class="banner-text">
+                    <h1>Assignments</h1>
+                    <p>Track and submit your coursework.</p>
+                </div>
+                <div class="banner-img"><i class="fas fa-edit"></i></div>
+            </div>
+
+            <div class="dashboard-grid">
+                <div class="left-column">
+                    <section>
+                        <div class="section-title">Pending Submission</div>
+                        <div class="notices-card">
+
+                            {% for assignment in pending_assignments %}
+                            <div class="notice-item">
+                                <div class="header-row" style="margin-bottom:5px;">
+                                    <h5>{{ assignment.Title }} - {{ assignment.CourseName }}</h5>
+                                    <span class="status-pending">Due: {{ assignment.Deadline }}</span>
+                                </div>
+                                <p>{{ assignment.Description }}</p>
+
+                                <form method="post" action="{{ url_for('student_submit_assignment') }}" style="margin-top:10px; display:flex; gap:8px; align-items:center;">
+                                    <input type="hidden" name="assignment_id" value="{{ assignment.AssignmentID }}">
+                                    <input type="text" name="document_link" placeholder="Google Drive link or document URL" style="flex:1; padding:8px; font-size:13px;" required>
+                                    <button type="submit" class="btn-view" style="font-size:12px; padding:6px 12px;">Upload</button>
+                                </form>
+                            </div>
+                            {% else %}
+                            <div class="notice-item">
+                                <h5>No pending assignments</h5>
+                                <p>You're all caught up!</p>
+                            </div>
+                            {% endfor %}
+
+                        </div>
+                    </section>
+                </div>
+
+                <aside class="right-column">
+                    <div class="section-title">Completed</div>
+                    <div class="notices-card">
+
+                        {% for assignment in completed_assignments %}
+                        <div class="notice-item">
+                            <h5>{{ assignment.Title }} - {{ assignment.CourseName }}</h5>
+                            <p class="status-pass">Submitted: {{ assignment.SubmittedAt }}</p>
+                            {% if assignment.obtained_marks is not none %}
+                            <p class="status-pass">Graded: {{ assignment.obtained_marks }}/{{ assignment.MaxMarks }}</p>
+                            {% endif %}
+                        </div>
+                        {% else %}
+                        <div class="notice-item">
+                            <h5>No completed assignments</h5>
+                            <p>Your completed assignments will appear here.</p>
+                        </div>
+                        {% endfor %}
+
+                    </div>
+                </aside>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

@@ -1,0 +1,9 @@
+sequenceDiagram
+    participant B as Faculty browser
+    participant F as faculty.py
+    participant D as MySQL
+    B->>F: Submit marks and feedback
+    F->>D: Update Submission
+    F->>D: Insert SubmissionEvaluation
+    F->>D: Commit both writes
+    F-->>B: Redirect to grading queue

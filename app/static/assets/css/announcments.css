@@ -1,0 +1,111 @@
+/* Additive styles for announcement detail (modern, centered, minimal) */
+.announcement-container {
+    max-width: 900px;
+    margin: 18px auto;
+    padding: 18px;
+}
+
+.announcement-hero {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 20px;
+    border-radius: 12px;
+    background: linear-gradient(90deg, #2b6fb5, #3a8dde);
+    color: #fff;
+    box-shadow: 0 6px 20px rgba(43, 111, 181, 0.12);
+}
+
+.announcement-hero .avatar {
+    width: 64px;
+    height: 64px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.12);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 20px;
+    color: #fff;
+}
+
+.announcement-hero .hero-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.announcement-hero .hero-title {
+    font-size: 1.5rem;
+    font-weight: 800;
+    margin: 0 0 4px;
+}
+
+.announcement-hero .meta-pill {
+    display: inline-block;
+    background: rgba(255, 255, 255, 0.12);
+    padding: 6px 12px;
+    border-radius: 18px;
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.announcement-body {
+    margin-top: 16px;
+    background: #fff;
+    padding: 22px;
+    border-radius: 12px;
+    border: 1px solid #e6eef9;
+    box-shadow: 0 6px 18px rgba(15, 23, 42, 0.04);
+    color: #0f172a;
+}
+
+.announcement-body p {
+    font-size: 1.06rem;
+    line-height: 1.8;
+    margin: 0;
+    white-space: pre-wrap;
+}
+
+.announcement-actions {
+    margin-top: 14px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.btn-back {
+    background: transparent;
+    border: 1px solid rgba(15, 23, 42, 0.06);
+    padding: 8px 12px;
+    border-radius: 8px;
+    color: #0f172a;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.btn-share {
+    background: linear-gradient(90deg, #3a8dde, #2b6fb5);
+    color: #fff;
+    padding: 8px 12px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 700;
+}
+
+@media (max-width:640px) {
+    .announcement-hero {
+        flex-direction: row;
+        gap: 12px;
+        padding: 14px;
+    }
+
+    .announcement-hero .avatar {
+        width: 52px;
+        height: 52px;
+        font-size: 18px;
+    }
+
+    .announcement-container {
+        padding: 12px;
+    }
+}

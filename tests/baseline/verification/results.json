@@ -1,0 +1,529 @@
+{
+  "run": {
+    "source": "SMS-DBS-master.zip",
+    "sha256": "488b340ba63acb1bb3de1f85b0e4772abcf64fcdb046117a841f57becaf11292",
+    "started_utc": "2026-11-19T19:32:02.074530+00:00",
+    "db": "8.0.44",
+    "schema": "sms_qa_56c31b1164f6",
+    "tables": 22,
+    "seed": {
+      "Person": 4,
+      "Student": 2,
+      "Faculty": 1,
+      "Admin": 1,
+      "Course": 2,
+      "Timetable": 2,
+      "Attendance": 3,
+      "ExamResult": 2,
+      "Assignment": 0,
+      "Submission": 0,
+      "Request": 0
+    },
+    "portals": {
+      "Student": "http://127.0.0.1:61547",
+      "Faculty": "http://127.0.0.1:61548",
+      "Admin": "http://127.0.0.1:61549"
+    },
+    "os": "Windows-10-10.0.26300-SP0",
+    "python": "3.11.9",
+    "packages": {
+      "Flask": "3.1.3",
+      "Flask-SQLAlchemy": "3.1.1",
+      "SQLAlchemy": "2.1.9",
+      "mysql-connector-python": "26.10.0",
+      "PyMySQL": "1.2.4",
+      "requests": "2.34.2",
+      "playwright": "1.65.2"
+    },
+    "browser": "157.0.4341.60",
+    "end_utc": "2026-11-19T19:32:09.001400+00:00",
+    "final": {
+      "Assignment": 1,
+      "Submission": 1,
+      "Document": 2,
+      "SubmissionDocument": 2,
+      "SubmissionEvaluation": 1,
+      "Feedback": 2,
+      "Request": 1
+    },
+    "assessment": [
+      [
+        "QA Evidence Task",
+        16,
+        20,
+        16
+      ]
+    ],
+    "timetable": [
+      [
+        "Monday",
+        "QA-M01"
+      ],
+      [
+        "Saturday",
+        "QA-S06"
+      ]
+    ],
+    "request": [
+      [
+        1,
+        "Certificate",
+        "Approved"
+      ]
+    ]
+  },
+  "cases": [
+    {
+      "id": "U01",
+      "level": "Unit",
+      "view": "White",
+      "refs": "FR-03",
+      "title": "Guest branch",
+      "steps": "Call the student login decorator in an empty Flask request context.",
+      "expected": "302 /",
+      "actual": "302 /",
+      "status": "PASS",
+      "ms": 25
+    },
+    {
+      "id": "U02",
+      "level": "Unit",
+      "view": "White",
+      "refs": "FR-03",
+      "title": "Signed-in branch",
+      "steps": "Call the decorator with student 101 in a local unit context.",
+      "expected": "handler ran",
+      "actual": "handler ran",
+      "status": "PASS",
+      "ms": 0
+    },
+    {
+      "id": "U03",
+      "level": "Unit",
+      "view": "White",
+      "refs": "FR-S6",
+      "title": "Empty attendance history",
+      "steps": "Supply cursor rows (attended, total) [] and capture the overall percentage passed to Jinja.",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "ms": 2
+    },
+    {
+      "id": "U04",
+      "level": "Unit",
+      "view": "White",
+      "refs": "FR-S6",
+      "title": "Course with zero meetings",
+      "steps": "Supply cursor rows (attended, total) [(0, 0)] and capture the overall percentage passed to Jinja.",
+      "expected": 0.0,
+      "actual": 0.0,
+      "status": "PASS",
+      "ms": 2
+    },
+    {
+      "id": "U05",
+      "level": "Unit",
+      "view": "White",
+      "refs": "FR-S6",
+      "title": "Mean attendance across courses",
+      "steps": "Supply cursor rows (attended, total) [(1, 2), (1, 1)] and capture the overall percentage passed to Jinja.",
+      "expected": 75.0,
+      "actual": 75.0,
+      "status": "PASS",
+      "ms": 2
+    },
+    {
+      "id": "U06",
+      "level": "Unit",
+      "view": "White",
+      "refs": "FR-S4",
+      "title": "Submission write error cleanup",
+      "steps": "Inject a database exception at the first write. Inspect rollback, commit, cleanup and the returned status.",
+      "expected": {
+        "rollback": 1,
+        "commit": 0,
+        "cursor closed": 1,
+        "connection closed": 1,
+        "status": 302
+      },
+      "actual": {
+        "rollback": 1,
+        "commit": 0,
+        "cursor closed": 1,
+        "connection closed": 1,
+        "status": 302
+      },
+      "status": "PASS",
+      "ms": 3
+    },
+    {
+      "id": "I01",
+      "level": "Integration",
+      "view": "Gray",
+      "refs": "FR-02",
+      "title": "Student login",
+      "steps": "POST the seeded student form with identifier student@example.test and the fixture password.",
+      "expected": "302 /student/dashboard",
+      "actual": "302 /student/dashboard",
+      "status": "PASS",
+      "ms": 36
+    },
+    {
+      "id": "I02",
+      "level": "Integration",
+      "view": "Gray",
+      "refs": "FR-02",
+      "title": "Faculty login",
+      "steps": "POST the seeded faculty form with identifier 201 and the fixture password.",
+      "expected": "302 /faculty/dashboard",
+      "actual": "302 /faculty/dashboard",
+      "status": "PASS",
+      "ms": 56
+    },
+    {
+      "id": "I03",
+      "level": "Integration",
+      "view": "Gray",
+      "refs": "FR-02",
+      "title": "Admin login",
+      "steps": "POST the seeded admin form with identifier 301 and the fixture password.",
+      "expected": "302 /admin/dashboard",
+      "actual": "302 /admin/dashboard",
+      "status": "PASS",
+      "ms": 47
+    },
+    {
+      "id": "I04",
+      "level": "Integration",
+      "view": "Gray",
+      "refs": "FR-S1",
+      "title": "CGPA for grades A and B",
+      "steps": "GET /student/dashboard with the authenticated fixture user. Read the rendered text for 3.5.",
+      "expected": {
+        "HTTP": 200,
+        "text present": true
+      },
+      "actual": {
+        "HTTP": 200,
+        "text present": true
+      },
+      "status": "PASS",
+      "ms": 43
+    },
+    {
+      "id": "I05",
+      "level": "Integration",
+      "view": "Gray",
+      "refs": "FR-S5",
+      "title": "Percentage for 18 out of 20",
+      "steps": "GET /student/grades with the authenticated fixture user. Read the rendered text for 90.0%.",
+      "expected": {
+        "HTTP": 200,
+        "text present": true
+      },
+      "actual": {
+        "HTTP": 200,
+        "text present": true
+      },
+      "status": "PASS",
+      "ms": 21
+    },
+    {
+      "id": "I06",
+      "level": "Integration",
+      "view": "Gray",
+      "refs": "FR-S6",
+      "title": "Attendance from two enrolled courses",
+      "steps": "GET /student/attendance with the authenticated fixture user. Read the rendered text for 75%.",
+      "expected": {
+        "HTTP": 200,
+        "text present": true
+      },
+      "actual": {
+        "HTTP": 200,
+        "text present": true
+      },
+      "status": "PASS",
+      "ms": 187
+    },
+    {
+      "id": "I07",
+      "level": "Integration",
+      "view": "Gray",
+      "refs": "FR-S7",
+      "title": "Monday class appears",
+      "steps": "GET /student/timetable with the authenticated fixture user. Read the rendered text for QA-M01.",
+      "expected": {
+        "HTTP": 200,
+        "text present": true
+      },
+      "actual": {
+        "HTTP": 200,
+        "text present": true
+      },
+      "status": "PASS",
+      "ms": 23
+    },
+    {
+      "id": "I08",
+      "level": "Integration",
+      "view": "Gray",
+      "refs": "FR-S7",
+      "title": "Saturday class appears",
+      "steps": "GET /student/timetable with the authenticated fixture user. Read the rendered text for QA-S06.",
+      "expected": {
+        "HTTP": 200,
+        "text present": true
+      },
+      "actual": {
+        "HTTP": 200,
+        "text present": false
+      },
+      "status": "FAIL",
+      "ms": 12
+    },
+    {
+      "id": "I09",
+      "level": "Integration",
+      "view": "Gray",
+      "refs": "FR-F1",
+      "title": "Faculty sees a taught course",
+      "steps": "GET /faculty/dashboard with the authenticated fixture user. Read the rendered text for QA Database Systems.",
+      "expected": {
+        "HTTP": 200,
+        "text present": true
+      },
+      "actual": {
+        "HTTP": 200,
+        "text present": true
+      },
+      "status": "PASS",
+      "ms": 75
+    },
+    {
+      "id": "I10",
+      "level": "Integration",
+      "view": "Gray",
+      "refs": "FR-A1",
+      "title": "Admin dashboard identifies the user",
+      "steps": "GET /admin/dashboard with the authenticated fixture user. Read the rendered text for QA Admin.",
+      "expected": {
+        "HTTP": 200,
+        "text present": true
+      },
+      "actual": {
+        "HTTP": 200,
+        "text present": true
+      },
+      "status": "PASS",
+      "ms": 34
+    },
+    {
+      "id": "I11",
+      "level": "Integration",
+      "view": "Gray",
+      "refs": "FR-S10",
+      "title": "Feedback at rating 1",
+      "steps": "Submit the valid endpoint rating for course 11. Count the matching row assigned to faculty 201.",
+      "expected": {
+        "HTTP": 200,
+        "faculty 201 rows": 1
+      },
+      "actual": {
+        "HTTP": 200,
+        "faculty 201 rows": 1
+      },
+      "status": "PASS",
+      "ms": 43
+    },
+    {
+      "id": "I12",
+      "level": "Integration",
+      "view": "Gray",
+      "refs": "FR-S10",
+      "title": "Feedback at rating 5",
+      "steps": "Submit the valid endpoint rating for course 11. Count the matching row assigned to faculty 201.",
+      "expected": {
+        "HTTP": 200,
+        "faculty 201 rows": 1
+      },
+      "actual": {
+        "HTTP": 200,
+        "faculty 201 rows": 1
+      },
+      "status": "PASS",
+      "ms": 14
+    },
+    {
+      "id": "S01",
+      "level": "System",
+      "view": "Black",
+      "refs": "FR-05",
+      "title": "Student invalid-password feedback",
+      "steps": "Enter an incorrect password for test student 101. Follow the redirect and read the visible error.",
+      "expected": {
+        "HTTP": 200,
+        "visible error": true
+      },
+      "actual": {
+        "HTTP": 200,
+        "visible error": false
+      },
+      "status": "FAIL",
+      "ms": 29
+    },
+    {
+      "id": "S02",
+      "level": "System",
+      "view": "Black",
+      "refs": "FR-05",
+      "title": "Admin invalid-password feedback",
+      "steps": "Submit a wrong password through the normal admin form. Read the returned page.",
+      "expected": {
+        "HTTP": 200,
+        "visible error": true
+      },
+      "actual": {
+        "HTTP": 500,
+        "visible error": false
+      },
+      "status": "FAIL",
+      "ms": 20
+    },
+    {
+      "id": "S03",
+      "level": "System",
+      "view": "Black",
+      "refs": "FR-S3",
+      "title": "Student without assignments",
+      "steps": "Sign in as student 102, who has no enrollments, and open the assignments list.",
+      "expected": {
+        "HTTP": 200,
+        "text present": true
+      },
+      "actual": {
+        "HTTP": 200,
+        "text present": true
+      },
+      "status": "PASS",
+      "ms": 50
+    },
+    {
+      "id": "S04",
+      "level": "System",
+      "view": "Black",
+      "refs": "FR-F3, FR-S3, FR-S4, FR-F4",
+      "title": "Assignment through grading",
+      "steps": "Faculty creates a 20-mark task. Student submits a link. Faculty grades the submission. Student reopens completed work.",
+      "expected": {
+        "create": 302,
+        "listed for student": true,
+        "submit": 302,
+        "listed for faculty": true,
+        "grade": 302,
+        "student sees 16/20": true
+      },
+      "actual": {
+        "create": 302,
+        "listed for student": true,
+        "submit": 302,
+        "listed for faculty": true,
+        "grade": 302,
+        "student sees 16/20": true
+      },
+      "status": "PASS",
+      "ms": 167
+    },
+    {
+      "id": "I13",
+      "level": "Integration",
+      "view": "Gray",
+      "refs": "FR-S4",
+      "title": "Second submission of the same task",
+      "steps": "After S04, submit a revised link. Count submission rows for this task and links in the initially empty fixture.",
+      "expected": {
+        "redirect": "302 /student/assignments",
+        "submissions": 1,
+        "document links": 2
+      },
+      "actual": {
+        "redirect": "302 /student/assignments",
+        "submissions": 1,
+        "document links": 2
+      },
+      "status": "PASS",
+      "ms": 21
+    },
+    {
+      "id": "S05",
+      "level": "System",
+      "view": "Black",
+      "refs": "FR-S11, FR-A4",
+      "title": "Certificate approval across portals",
+      "steps": "Submit a certificate request as the student. Follow its approval link as admin, then reopen student history.",
+      "expected": {
+        "sent": 302,
+        "certificate queued": true,
+        "decision": 302,
+        "student sees Approved": true
+      },
+      "actual": {
+        "sent": 302,
+        "certificate queued": true,
+        "decision": 302,
+        "student sees Approved": true
+      },
+      "status": "PASS",
+      "ms": 93
+    },
+    {
+      "id": "S06",
+      "level": "System",
+      "view": "Black",
+      "refs": "FR-03, FR-04",
+      "title": "Logout invalidates the student session",
+      "steps": "Log in, select logout, then revisit the same dashboard.",
+      "expected": [
+        "302 /",
+        "302 /"
+      ],
+      "actual": [
+        "302 /",
+        "302 /"
+      ],
+      "status": "PASS",
+      "ms": 29
+    },
+    {
+      "id": "S07",
+      "level": "System",
+      "view": "Black",
+      "refs": "FR-02, FR-S1, FR-S7",
+      "title": "Student journey in Edge",
+      "steps": "Use the real login form and activate the Timetable link on the dashboard. Read the Monday room in the browser.",
+      "expected": {
+        "page": "/student/timetable",
+        "weekday room visible": true
+      },
+      "actual": {
+        "page": "/student/timetable",
+        "weekday room visible": true
+      },
+      "status": "PASS",
+      "ms": 4586
+    },
+    {
+      "id": "B01",
+      "level": "System",
+      "view": "Black",
+      "refs": "FR-01",
+      "title": "Unified role selector",
+      "steps": "Inspect the archive for the entry point needed to launch the shared gateway.",
+      "expected": "Start the shared gateway and select each role.",
+      "actual": "main.py absent from ZIP. Gateway journey could not start.",
+      "status": "BLOCKED",
+      "ms": null
+    }
+  ]
+}

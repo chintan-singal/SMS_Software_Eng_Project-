@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Feedback</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/faculty.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+    <script>
+        // Force a reload if the user navigates back to this page after logout
+        window.addEventListener("pageshow", function (event) {
+            const historyTraversal = event.persisted ||
+                (typeof window.performance !== "undefined" &&
+                    window.performance.navigation.type === 2);
+
+            if (historyTraversal) {
+                // Reload the page to trigger the server-side session check
+                window.location.reload();
+            }
+        });
+    </script>
+</head>
+
+<body>
+
+    <div class="app-container">
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <div class="logo-area">
+                <i class="fas fa-chalkboard-teacher"></i>
+            </div>
+
+            <ul class="nav-menu">
+                <button class="nav-btn" onclick="location.href='/faculty/dashboard'"><i class="fas fa-columns"></i>
+                    Dashboard</button>
+                <button class="nav-btn" onclick="location.href='/faculty/courses'"><i class="fas fa-book"></i> My
+                    Courses</button>
+                <button class="nav-btn" onclick="location.href='/faculty/students'"><i class="fas fa-users"></i>
+                    Enrolled Students</button>
+                <button class="nav-btn" onclick="location.href='/faculty/assignments'"><i class="fas fa-tasks"></i>
+                    Assignments</button>
+                <button class="nav-btn" onclick="location.href='/faculty/submissions'"><i
+                        class="fas fa-file-upload"></i> Submissions</button>
+                <button class="nav-btn" onclick="location.href='/faculty/attendance'"><i
+                        class="fas fa-check-circle"></i> Attendance</button>
+                <button class="nav-btn" onclick="location.href='/faculty/exams'"><i class="fas fa-pencil-ruler"></i>
+                    Exams & Marks</button>
+                <button class="nav-btn active" onclick="location.href='/faculty/feedback'"><i
+                        class="fas fa-comment-dots"></i> Feedback</button>
+                <button class="nav-btn" onclick="location.href='/faculty/announcements'"><i class="fas fa-bullhorn"></i>
+                    Announcements</button>
+                <button class="nav-btn" onclick="location.href='/faculty/documents'"><i class="fas fa-folder-open"></i>
+                    Documents</button>
+            </ul>
+
+            <div class="logout" onclick="location.href='/logout'" style="cursor:pointer;">
+                <i class="fas fa-sign-out-alt" style="margin-right: 15px;"></i> Logout
+            </div>
+        </aside>
+
+        <!-- MAIN -->
+        <main class="main-content">
+
+            <!-- HEADER -->
+            <header>
+                <div class="search-bar">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search feedback...">
+                </div>
+
+                <div class="user-profile">
+                    <div class="user-info">
+                        <h4>Dr.{{ faculty.FullName }}</h4>
+                        <span>Department of {{ faculty.Department }}</span>
+                    </div>
+                    <img src="{{ url_for('static', filename='assets/images/teacher.jpg') }}
+                    " class="avatar" />
+                </div>
+            </header>
+
+            <!-- BANNER -->
+            <div class="banner">
+                <div class="banner-text">
+                    <h1>Student Feedback</h1>
+                    <p>See what your students think about your courses.</p>
+                </div>
+                <div class="banner-img">
+                    <i class="fas fa-comments"></i>
+                </div>
+            </div>
+
+            <!-- GRID -->
+            <div class="dashboard-grid">
+
+                <!-- LEFT COLUMN -->
+                <div class="left-column" style="width:100%;">
+
+                    <!-- FEEDBACK GRID -->
+                    <section>
+                        <div class="header-row">
+                            <div class="section-title">All Feedback</div>
+                        </div>
+
+                        <div style="
+                            display:grid;
+                            grid-template-columns:repeat(auto-fill, minmax(280px,1fr));
+                            gap:20px;
+                            margin-top:20px;
+                        ">
+
+                            {% if feedbacks|length == 0 %}
+                            <div class="card">
+                                <p>No feedback received yet.</p>
+                            </div>
+                            {% endif %}
+
+                            {% for f in feedbacks %}
+                            <div class="card" style="padding:25px; text-align:left;">
+
+                                <h3 style="margin:0; font-size:18px;">
+                                    {{ f.FirstName }} {{ f.LastName }}
+                                </h3>
+
+                                <p style="font-size:13px; color:gray; margin:5px 0 10px;">
+                                    Course: {{ f.CourseName if f.CourseName else ('Course ' ~ f.CourseID) }}
+                                </p>
+
+                                <p style="font-size:14px; color:#333;">
+                                    "{{ f.Comments }}"
+                                </p>
+
+                                <div style="margin-top:10px; font-size:13px; color:gray;">
+                                    Rating:
+                                    <strong style="color:var(--primary-blue-medium);">
+                                        {{ f.Rating }}/5
+                                    </strong>
+                                </div>
+
+                                <div style="margin-top:5px; font-size:12px; color:#999;">
+                                    {{ f.CreatedAt }}
+                                </div>
+
+                            </div>
+                            {% endfor %}
+
+                        </div>
+
+                    </section>
+
+                </div>
+
+            </div>
+
+        </main>
+
+    </div>
+
+</body>
+
+</html>

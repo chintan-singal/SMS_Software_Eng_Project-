@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Requests</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/pages.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .request-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            max-width: 800px;
+        }
+        .form-group { margin-bottom: 18px; }
+        .form-group label { display:block; margin-bottom:8px; font-weight:600; color:#333; }
+        .form-group select, .form-group textarea, .form-group input[type="text"] {
+            width:100%; padding:12px; border:1px solid #ddd; border-radius:6px; font-size:14px;
+        }
+        .form-actions { display:flex; gap:10px; margin-top:18px; }
+        .btn-submit { flex:1; padding:12px; background: linear-gradient(135deg,#1E90FF,#007BFF); color:white; border:none; border-radius:6px; font-size:16px; font-weight:600; cursor:pointer; }
+        .btn-cancel { flex:1; padding:12px; background:#f0f0f0; border:1px solid #ddd; color:#333; border-radius:6px; font-size:16px; font-weight:600; cursor:pointer; }
+        .note { color:#666; font-size:13px; margin-top:6px; }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <aside class="sidebar" id="sidebar">
+            <div class="close-sidebar" onclick="toggleSidebar()">
+                <i class="fas fa-times"></i>
+            </div>
+
+            <div class="logo-area"><i class="fas fa-user-graduate"></i></div>
+            
+            <nav class="nav-menu">
+                <button class="nav-btn" onclick="location.href='{{ url_for("student_dashboard") }}'">
+                    <i class="fas fa-columns"></i> Dashboard
+                </button>
+                <button class="nav-btn" onclick="location.href='{{ url_for("student_courses") }}'">
+                    <i class="fas fa-book"></i> My Courses
+                </button>
+                <button class="nav-btn" onclick="location.href='{{ url_for("student_assignments") }}'">
+                    <i class="fas fa-tasks"></i> Assignments
+                </button>
+                <button class="nav-btn" onclick="location.href='{{ url_for("student_grades") }}'">
+                    <i class="fas fa-chart-line"></i> Grades & Exams
+                </button>
+                <button class="nav-btn" onclick="location.href='{{ url_for("student_attendance") }}'">
+                    <i class="fas fa-check-circle"></i> Attendance
+                </button>
+                <button class="nav-btn" onclick="location.href='{{ url_for("student_timetable") }}'">
+                    <i class="fas fa-calendar-alt"></i> Timetable
+                </button>
+                <button class="nav-btn" onclick="location.href='{{ url_for("student_fees") }}'">
+                    <i class="fas fa-wallet"></i> Fees
+                </button>
+                <button class="nav-btn" onclick="location.href='{{ url_for("student_feedback") }}'">
+                    <i class="fas fa-comment-dots"></i> Feedback
+                </button>
+                <button class="nav-btn active" onclick="location.href='{{ url_for("student_request") }}'">
+                    <i class="fas fa-envelope"></i> Requests
+                </button>
+            </nav>
+            
+            <a class="logout" href="{{ url_for('student_logout') }}">
+                <i class="fas fa-sign-out-alt" style="margin-right: 15px;"></i> Logout
+            </a>
+        </aside>
+
+        <main class="main-content">
+            <header>
+                <div class="search-bar"><i class="fas fa-search"></i><input type="text" placeholder="Search..."></div>
+                <div class="user-profile">
+                    <div class="user-info">
+                        <h4>{{ user_name }}</h4>
+                        <span>{{ user_program }}</span>
+                    </div>
+                    <img src="https://i.pravatar.cc/150?img=12" class="avatar">
+                </div>
+            </header>
+
+            <div class="banner">
+                <div class="banner-text"><h1>Requests</h1><p>Submit requests (info update, certificate, ID reissue).</p></div>
+                <div class="banner-img"><i class="fas fa-envelope"></i></div>
+            </div>
+
+            <div class="dashboard-grid">
+                <div class="left-column" style="width:100%;">
+                    <section>
+
+                        {% with messages = get_flashed_messages(with_categories=true) %}
+                          {% if messages %}
+                            {% for category, msg in messages %}
+                              <div class="{{ 'success-message' if category=='success' else 'error-message' }}">
+                                <i class="fas fa-info-circle"></i> {{ msg }}
+                              </div>
+                            {% endfor %}
+                          {% endif %}
+                        {% endwith %}
+
+                        <div class="request-card">
+                            <form method="POST" action="{{ url_for('student_request') }}">
+
+                                <div class="form-group">
+                                    <label for="request_type"><i class="fas fa-list"></i> Request Type</label>
+                                    <select id="request_type" name="request_type" required>
+                                        <option value="">-- Choose a request type --</option>
+                                        <option value="InfoUpdate">Info Update</option>
+                                        <option value="Certificate">Certificate</option>
+                                        <option value="IDReissue">ID Reissue</option>
+                                    </select>
+                                    <div class="note">Choose the most appropriate request type. Additional details may be provided below.</div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="details"><i class="fas fa-pen"></i> Details (optional)</label>
+                                    <textarea id="details" name="details" rows="6" placeholder="Provide any details or supporting information..."></textarea>
+                                </div>
+
+                                <div class="form-actions">
+                                    <button type="submit" class="btn-submit"><i class="fas fa-paper-plane"></i> Submit Request</button>
+                                    <button type="button" class="btn-cancel" onclick="location.href='{{ url_for("student_dashboard") }}'"><i class="fas fa-times"></i> Cancel</button>
+                                </div>
+
+                            </form>
+                        </div>
+
+                    </section>
+
+                    <section style="margin-top: 30px;">
+                        <div class="header-row">
+                            <div class="section-title">Request History</div>
+                        </div>
+                        <div class="notices-card">
+                            {% if requests %}
+                                {% for req in requests %}
+                                <div class="notice-item" style="border-left: 4px solid {% if req.Status == 'Approved' %}#28a745{% elif req.Status == 'Rejected' %}#dc3545{% else %}#ffc107{% endif %}; padding-left: 15px;">
+                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                                        <h5 style="margin: 0;">{{ req.RequestType }}</h5>
+                                        <span class="badge" style="background-color: {% if req.Status == 'Approved' %}#28a745{% elif req.Status == 'Rejected' %}#dc3545{% else %}#ffc107{% endif %}; color: white; padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: bold;">{{ req.Status }}</span>
+                                    </div>
+                                    <p style="font-size: 13px; color: #666; margin: 5px 0;">Submitted on: {{ req.RequestDate.strftime('%d %b %Y %H:%M') if req.RequestDate else 'N/A' }}</p>
+                                </div>
+                                {% endfor %}
+                            {% else %}
+                                <div class="notice-item">
+                                    <p style="color: #999; text-align: center;">No requests submitted yet.</p>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </section>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script>
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('active');
+        }
+    </script>
+</body>
+</html>

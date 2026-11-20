@@ -1,0 +1,12 @@
+erDiagram
+    Course ||--o{ Assignment : "has"
+    Faculty ||--o{ Assignment : "creates"
+    Assignment ||--o{ Submission : "receives"
+    Student ||--o{ Submission : "submits"
+    Submission ||--o{ SubmissionDocument : "links"
+    Document ||--o{ SubmissionDocument : "identifies file"
+    Submission ||--o{ SubmissionEvaluation : "receives"
+    Faculty ||--o{ SubmissionEvaluation : "evaluates"
+    Course ||--o{ Exam : "has"
+    Exam ||--o{ ExamResult : "produces"
+    Student ||--o{ ExamResult : "earns"

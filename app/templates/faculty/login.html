@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <title>Faculty Portal - Sign In</title>
+
+    <!-- CSS uses STATIC FILE PATH (as you requested) -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/login.css') }}">
+
+    <script>
+        // Force a reload if the user navigates back to this page after logout
+        window.addEventListener("pageshow", function (event) {
+            const historyTraversal = event.persisted ||
+                (typeof window.performance !== "undefined" &&
+                    window.performance.navigation.type === 2);
+
+            if (historyTraversal) {
+                // Reload the page to trigger the server-side session check
+                window.location.reload();
+            }
+        });
+    </script>
+
+</head>
+
+<body>
+
+    <canvas id="bg-canvas"></canvas>
+
+    <main class="main">
+        <div class="container">
+            <section class="login-wrapper">
+                <div class="content-split">
+
+                    <!-- LEFT SIDE -->
+                    <div class="split-left">
+                        <img src="{{ url_for('static', filename='assets/images/sau-white-logo.png') }}" alt="SAU Logo"
+                            class="logo-main">
+
+                        <div class="logo-details">
+                            <p class="logo-text">SOUTH ASIAN UNIVERSITY</p>
+                            <p class="logo-subtext">A University Established by SAARC Nations</p>
+                        </div>
+                    </div>
+
+                    <!-- RIGHT SIDE (FORM) -->
+                    <div class="split-right">
+
+                        <div class="heading">
+                            <h1 class="text text-large">Faculty Access Portal</h1>
+
+                            <p class="text-normal">
+                                Admin User?
+                                <a href="http://127.0.0.1:5003/admin" class="text-links">Access here.</a><br>
+                                Student User?
+                                <a href="http://127.0.0.1:5001/" class="text-links">Access here.</a>
+                            </p>
+                        </div>
+
+                        <!-- Flask Login Form -->
+                        <form name="facultySignin" class="form" action="/faculty/login" method="POST">
+
+                            <div class="input-control">
+                                <input type="text" name="facultyId" id="facultyId" class="input-field"
+                                    placeholder="Faculty ID Number" required>
+                            </div>
+
+                            <div class="input-control">
+                                <input type="password" name="password" id="password" class="input-field"
+                                    placeholder="Password" required>
+                            </div>
+
+                            <div class="input-control">
+                                <button type="submit" class="submit-btn">
+                                    Faculty Sign In
+                                </button>
+                            </div>
+
+                        </form>
+
+                    </div>
+
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Background Animation Script -->
+    <script>
+        const canvas = document.getElementById('bg-canvas');
+        if (canvas) {
+            const ctx = canvas.getContext('2d');
+            let width = canvas.width = window.innerWidth;
+            let height = canvas.height = window.innerHeight;
+
+            window.addEventListener('resize', () => {
+                width = canvas.width = window.innerWidth;
+                height = canvas.height = window.innerHeight;
+            });
+
+            const waveAmplitude = height * 0.15;
+            const waveFrequency = 0.005;
+            const waveSpeed = 0.02;
+            let step = 0;
+
+            function drawWave(phase, opacity) {
+                ctx.beginPath();
+                ctx.moveTo(0, height);
+
+                for (let x = 0; x < width; x++) {
+                    const y = Math.sin(x * waveFrequency + phase) * waveAmplitude + height * 0.8;
+                    ctx.lineTo(x, y);
+                }
+
+                ctx.lineTo(width, height);
+                ctx.closePath();
+
+                ctx.fillStyle = `rgba(79, 123, 255, ${opacity})`;
+                ctx.fill();
+            }
+
+            function animate() {
+                ctx.clearRect(0, 0, width, height);
+                step += waveSpeed;
+                drawWave(step, 0.1);
+                drawWave(step + 1, 0.2);
+                drawWave(step + 2, 0.3);
+                requestAnimationFrame(animate);
+            }
+
+            animate();
+        }
+    </script>
+
+</body>
+
+</html>

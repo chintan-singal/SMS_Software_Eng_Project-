@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Faculty Feedback</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/pages.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        .feedback-form {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            max-width: 700px;
+        }
+        .form-group { margin-bottom: 20px; }
+        .form-group label {
+            display: block; margin-bottom: 8px; font-weight: 600; color: #333;
+        }
+        .form-group select,
+        .form-group textarea {
+            width: 100%; padding: 12px; border: 1px solid #ddd;
+            border-radius: 6px; font-size: 14px;
+        }
+        .rating-group { display: flex; gap: 15px; align-items: center; }
+        .star-rating { display: flex; gap: 10px; font-size: 30px; }
+        .star { cursor: pointer; color: #ddd; transition: 0.2s; }
+        .star:hover, .star.active { color: #FFD700; }
+        .rating-value {
+            min-width: 80px; padding: 8px 12px; background: #f0f0f0;
+            border-radius: 6px; text-align: center; font-weight: 600; color: #666;
+        }
+        .form-actions { display: flex; gap: 10px; margin-top: 25px; }
+        .btn-submit {
+            flex: 1; padding: 12px; background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white; border: none; border-radius: 6px;
+            font-size: 16px; font-weight: 600; cursor: pointer;
+        }
+        .btn-cancel {
+            flex: 1; padding: 12px; background: #f0f0f0;
+            border: 1px solid #ddd; color: #333;
+            border-radius: 6px; font-size: 16px; font-weight: 600; cursor: pointer;
+        }
+        .success-message,
+        .error-message {
+            padding: 12px 16px; border-radius: 6px; margin-bottom: 20px; font-weight: 600;
+        }
+        .success-message {
+            background: #d4edda; color: #155724; border-left: 4px solid #28a745;
+        }
+        .error-message {
+            background: #f8d7da; color: #721c24; border-left: 4px solid #f5c6cb;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app-container">
+        
+        <aside class="sidebar" id="sidebar">
+            <div class="close-sidebar" onclick="toggleSidebar()">
+                <i class="fas fa-times"></i>
+            </div>
+
+            <div class="logo-area"><i class="fas fa-user-graduate"></i></div>
+            
+            <nav class="nav-menu">
+                <button class="nav-btn" onclick="location.href='{{ url_for("student_dashboard") }}'">
+                    <i class="fas fa-columns"></i> Dashboard
+                </button>
+                <button class="nav-btn" onclick="location.href='{{ url_for("student_courses") }}'">
+                    <i class="fas fa-book"></i> My Courses
+                </button>
+                <button class="nav-btn" onclick="location.href='{{ url_for("student_assignments") }}'">
+                    <i class="fas fa-tasks"></i> Assignments
+                </button>
+                <button class="nav-btn" onclick="location.href='{{ url_for("student_grades") }}'">
+                    <i class="fas fa-chart-line"></i> Grades & Exams
+                </button>
+                <button class="nav-btn" onclick="location.href='{{ url_for("student_attendance") }}'">
+                    <i class="fas fa-check-circle"></i> Attendance
+                </button>
+                <button class="nav-btn" onclick="location.href='{{ url_for("student_timetable") }}'">
+                    <i class="fas fa-calendar-alt"></i> Timetable
+                </button>
+                <button class="nav-btn" onclick="location.href='{{ url_for("student_fees") }}'">
+                    <i class="fas fa-wallet"></i> Fees
+                </button>
+                <button class="nav-btn active" onclick="location.href='{{ url_for("student_feedback") }}'">
+                    <i class="fas fa-comment-dots"></i> Feedback
+                </button>
+                <button class="nav-btn" onclick="location.href='{{ url_for("student_request") }}'">
+                    <i class="fas fa-envelope"></i> Requests
+                </button>
+            </nav>
+            
+            <a class="logout" href="{{ url_for('student_logout') }}">
+                <i class="fas fa-sign-out-alt" style="margin-right: 15px;"></i> Logout
+            </a>
+        </aside>
+
+        <main class="main-content">
+            <header>
+                <div class="search-bar"><i class="fas fa-search"></i><input type="text" placeholder="Search..."></div>
+                <div class="user-profile">
+                    <div class="user-info">
+                        <h4>{{ user_name }}</h4>
+                        <span>{{ user_program }}</span>
+                    </div>
+                    <img src="https://i.pravatar.cc/150?img=12" class="avatar">
+                </div>
+            </header>
+
+            <div class="banner">
+                <div class="banner-text"><h1>Faculty Feedback</h1><p>Share your feedback with your instructors.</p></div>
+                <div class="banner-img"><i class="fas fa-comment-dots"></i></div>
+            </div>
+
+            <div class="dashboard-grid">
+                <div class="left-column" style="width:100%;">
+                    <section>
+
+                        {% if success_message %}
+                        <div class="success-message">
+                            <i class="fas fa-check-circle"></i> {{ success_message }}
+                        </div>
+                        {% endif %}
+
+                        {% if error_message %}
+                        <div class="error-message">
+                            <i class="fas fa-exclamation-circle"></i> {{ error_message }}
+                        </div>
+                        {% endif %}
+
+                        <div class="feedback-form">
+                            <form method="POST" action="{{ url_for('student_feedback') }}">
+
+                                <div class="form-group">
+                                    <label for="course"><i class="fas fa-book"></i> Select Course</label>
+                                    <select id="course" name="course_id" required>
+                                        <option value="">-- Choose a course --</option>
+                                        {% for course in courses %}
+                                        <option value="{{ course.CourseID }}">
+                                            {{ course.CourseName }} ({{ course.faculty_name if course.faculty_name else 'Not Assigned' }})
+                                        </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label><i class="fas fa-star"></i> Rating</label>
+                                    <div class="rating-group">
+                                        <div class="star-rating" id="starRating">
+                                            <span class="star" onclick="setRating(1)">★</span>
+                                            <span class="star" onclick="setRating(2)">★</span>
+                                            <span class="star" onclick="setRating(3)">★</span>
+                                            <span class="star" onclick="setRating(4)">★</span>
+                                            <span class="star" onclick="setRating(5)">★</span>
+                                        </div>
+                                        <div class="rating-value" id="ratingValue">Select rating</div>
+                                    </div>
+                                    <input type="hidden" id="rating" name="rating" value="0">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="comments"><i class="fas fa-pen"></i> Comments (Optional)</label>
+                                    <textarea id="comments" name="comments" rows="6" placeholder="Share your thoughts..." maxlength="1000"></textarea>
+                                </div>
+
+                                <div class="form-actions">
+                                    <button type="submit" class="btn-submit"><i class="fas fa-paper-plane"></i> Submit Feedback</button>
+                                    <button type="button" class="btn-cancel" onclick="location.href='{{ url_for("student_dashboard") }}'"><i class="fas fa-times"></i> Cancel</button>
+                                </div>
+
+                            </form>
+                        </div>
+
+                    </section>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script>
+        let currentRating = 0;
+
+        function setRating(value) {
+            currentRating = value;
+            document.getElementById('rating').value = value;
+            updateStars();
+        }
+
+        function updateStars() {
+            const stars = document.querySelectorAll('.star');
+            stars.forEach((star, i) => {
+                star.classList.toggle('active', i < currentRating);
+            });
+            document.getElementById('ratingValue').textContent =
+                currentRating === 0 ? 'Select rating' : currentRating + ' / 5';
+        }
+
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('active');
+        }
+
+        document.querySelector('form').addEventListener('submit', e => {
+            if (currentRating === 0) {
+                e.preventDefault();
+                alert('Please select a rating before submitting.');
+            }
+        });
+    </script>
+</body>
+</html>

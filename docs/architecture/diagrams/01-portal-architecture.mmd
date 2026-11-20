@@ -1,0 +1,18 @@
+flowchart TB
+    B["Web browser<br/>HTML forms and links"]
+    S["Student portal<br/>app.py · 5000"]
+    F["Faculty portal<br/>faculty.py · 5001"]
+    A["Admin portal<br/>admin.py · 5002"]
+    D[("MySQL<br/>student_management")]
+    B <-->|HTTP| S
+    B <-->|HTTP| F
+    B <-->|HTTP| A
+    S <-->|Connector/Python| D
+    F <-->|SQLAlchemy + PyMySQL| D
+    A <-->|SQLAlchemy + PyMySQL| D
+    classDef student fill:#dfedf9,stroke:#427ba6,color:#173b5b
+    classDef faculty fill:#e2efe5,stroke:#4a8259,color:#234b30
+    classDef admin fill:#fff0df,stroke:#b37c41,color:#68451d
+    class S student
+    class F faculty
+    class A admin

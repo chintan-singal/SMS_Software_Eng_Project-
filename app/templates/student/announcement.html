@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Announcement</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/pages.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/announcement.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+<div class="app-container">
+    <main class="main-content">
+        <header>
+            <div class="user-profile">
+                <div class="user-info"><h4>{{ user_name }}</h4></div>
+            </div>
+        </header>
+
+        <div class="dashboard-grid">
+            <div class="left-column" style="width:100%;">
+                <section>
+                    <div class="section-title">Announcement</div>
+                    <div class="announcement-container">
+                        <div class="announcement-hero">
+                            <div class="avatar">{{ announcement.PostedByName[0] if announcement.PostedByName else 'A' }}</div>
+                            <div class="hero-info">
+                                <div class="hero-title">Announcement</div>
+                                <div class="meta-pill">Posted on: <strong>{{ announcement.DatePosted }}</strong>{% if announcement.PostedByName %} &middot; By: <strong>{{ announcement.PostedByName }}</strong>{% endif %}</div>
+                            </div>
+                        </div>
+
+                        <div class="announcement-body">
+                            <p>{{ announcement.Message }}</p>
+                        </div>
+
+                        <div class="announcement-actions">
+                            <a class="btn-back" href="{{ url_for('student_dashboard') }}">&larr; Back to Dashboard</a>
+                            <a class="btn-share" href="javascript:window.print()">Print</a>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+</div>
+</body>
+</html>
