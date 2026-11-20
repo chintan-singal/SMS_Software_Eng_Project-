@@ -8,10 +8,10 @@ A software engineering project built with Flask and MySQL. Students submit work 
 | --- | --- |
 | [app/](app/) | Gateway, three Flask portals, Jinja templates, stylesheets and images |
 | [database/](database/) | MySQL setup, optional synthetic demo data and the supplied schema export |
-| [Architecture and design](Software-Architecture-and-Design.pdf) | System architecture, HLD, LLD, database design and technology choices |
-| [Architecture diagrams](docs/architecture/diagrams/) | Editable Mermaid sources and SVG figures from the documented baseline |
-| [Testing and patch release](Software-Testing-and-Patch-Release.pdf) | Test strategy, case results, defect analysis and planned fixes |
-| [QA evidence and runner](tests/baseline/README.txt) | Reproduction instructions, SQL fixtures, case results, server log and screenshots |
+| [Architecture and design](Architecture/Software-Architecture-and-Design.pdf) | System architecture, HLD, LLD, database design and technology choices |
+| [Architecture diagrams](Architecture/diagrams/) | Editable Mermaid sources and SVG figures from the documented baseline |
+| [Testing and patch release](Testing/Software-Testing-and-Patch-Release.pdf) | Test strategy, case results, defect analysis and planned fixes |
+| [QA evidence and runner](Testing/baseline/README.txt) | Reproduction instructions, SQL fixtures, case results, server log and screenshots |
 | [Team presentation](SMS-Integrated-SDLC.pptx) | Integrated SDLC presentation and team responsibilities |
 
 ## Source and testing baseline
